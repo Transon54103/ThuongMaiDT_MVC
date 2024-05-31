@@ -16,8 +16,49 @@ namespace Project_ThuongMaiDT.Controllers
             List<Category> objcategorylist = _dB.categories.ToList();
             return View(objcategorylist);
         }
-        public IActionResult Create() 
+        public IActionResult Create()
         {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Category obj) 
+        {
+            if(obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name","The DisplayOrder cannot exactly match the Name.");
+            }
+            if (ModelState.IsValid)
+            {
+                _dB.categories.Add(obj);
+                _dB.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Category categoryFromDb = _dB.categories.Find(id);
+            if (categoryFromDb == null) { return NotFound(); }
+
+            return View(categoryFromDb);
+        }
+        [HttpPost]
+        public IActionResult Edit(Category obj)
+        {
+            if (obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
+            }
+            if (ModelState.IsValid)
+            {
+                _dB.categories.Add(obj);
+                _dB.SaveChanges();
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
