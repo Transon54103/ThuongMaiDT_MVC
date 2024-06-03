@@ -31,6 +31,7 @@ namespace Project_ThuongMaiDT.Controllers
             {
                 _dB.categories.Add(obj);
                 _dB.SaveChanges();
+                TempData["success"] = "Category create successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -42,24 +43,45 @@ namespace Project_ThuongMaiDT.Controllers
                 return NotFound();
             }
             Category categoryFromDb = _dB.categories.Find(id);
+            //Category categoryFromDb1 = _dB.categories.FirstOrDefault(u => u.Id==id);
+            //Category categoryFromDb2 = _dB.categories.Where(u => u.Id==id).FirstOrDefault();
             if (categoryFromDb == null) { return NotFound(); }
 
             return View(categoryFromDb);
         }
         [HttpPost]
         public IActionResult Edit(Category obj)
-        {
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
-            }
+        {   
             if (ModelState.IsValid)
             {
-                _dB.categories.Add(obj);
+                _dB.categories.Update(obj);
                 _dB.SaveChanges();
+                TempData["success"] = "Category update successfully";
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Category categoryFromDb = _dB.categories.Find(id);
+            if (categoryFromDb == null) { return NotFound(); }
+
+            return View(categoryFromDb);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            Category obj = _dB.categories.Find(id);
+            if (obj == null) { return NotFound(); }
+            _dB.categories.Remove(obj);
+            _dB.SaveChanges();
+            TempData["success"] = "Category deleted successfully";
+            return RedirectToAction("Index");
         }
     }
 }
