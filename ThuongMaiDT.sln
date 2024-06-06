@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project_ThuongMaiDT", "Project_ThuongMaiDT\Project_ThuongMaiDT.csproj", "{E00D802F-57CC-4EB7-A48D-41FEE774AF2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThuongMaiDT_Razor", "ThuongMaiDT_Razor\ThuongMaiDT_Razor.csproj", "{C9578DCF-6AD1-4B1D-AFB9-8D52937E27CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThuongMaiDT_Razor", "ThuongMaiDT_Razor\ThuongMaiDT_Razor.csproj", "{C9578DCF-6AD1-4B1D-AFB9-8D52937E27CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
