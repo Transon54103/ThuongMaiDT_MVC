@@ -1,4 +1,4 @@
-namespace Project_ThuongMaiDT.Models
+namespace TMDT.Models
 {
     public class ErrorViewModel
     {

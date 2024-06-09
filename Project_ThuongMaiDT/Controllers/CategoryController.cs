@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Project_ThuongMaiDT.Data;
-using Project_ThuongMaiDT.Models;
+using TMDT.DataAccess.Data;
+using TMDT.Models;
+
 
 namespace Project_ThuongMaiDT.Controllers
 {

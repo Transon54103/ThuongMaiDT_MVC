@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project_ThuongMaiDT.Models;
+using TMDT.Models;
 
-namespace Project_ThuongMaiDT.Data
+namespace TMDT.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {

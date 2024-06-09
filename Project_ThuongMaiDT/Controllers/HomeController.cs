@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Project_ThuongMaiDT.Models;
+
 using System.Diagnostics;
+using TMDT.Models;
 
 namespace Project_ThuongMaiDT.Controllers
 {

@@ -5,10 +5,10 @@ using ThuongMaiDT_Razor.Model;
 
 namespace ThuongMaiDT_Razor.Pages.Categories
 {
+    [BindProperties]
     public class CreateModel : PageModel
     {
         private readonly ApplicationDbContext _db;
-        [BindProperty]
         public Category Category { get; set; }
 
         public CreateModel(ApplicationDbContext db)
@@ -23,6 +23,7 @@ namespace ThuongMaiDT_Razor.Pages.Categories
 
             _db.categories.Add(Category);
             _db.SaveChanges();
+            TempData["success"] = "Category Updated successfully";
             return RedirectToPage("Index");
         } 
     }

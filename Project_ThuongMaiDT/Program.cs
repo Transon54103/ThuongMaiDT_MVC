@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Project_ThuongMaiDT.Data;
+using TMDT.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

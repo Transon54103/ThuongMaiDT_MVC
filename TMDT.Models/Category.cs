@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Project_ThuongMaiDT.Models
+namespace TMDT.Models
 {
     public class Category
     {
@@ -12,7 +12,7 @@ namespace Project_ThuongMaiDT.Models
         [DisplayName("Category Name")]
         public string Name { get; set; }
         [DisplayName("Display Order")]
-        [Range(1,100, ErrorMessage = "The field Display Order must be between 1 and 100!")]
+        [Range(1, 100, ErrorMessage = "The field Display Order must be between 1 and 100!")]
         public int DisplayOrder { get; set; }
 
 
