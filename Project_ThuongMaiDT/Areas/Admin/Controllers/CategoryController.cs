@@ -1,20 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TMDT.DataAccess.Data;
+using TMDT.DataAccess.Repository.IRepository;
 using TMDT.Models;
 
 
-namespace Project_ThuongMaiDT.Controllers
+namespace Project_ThuongMaiDT.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _dB;
-        public CategoryController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _dB = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objcategorylist = _dB.categories.ToList();
+            List<Category> objcategorylist = _unitOfWork.Category.GetAll().ToList();
             return View(objcategorylist);
         }
         public IActionResult Create()
@@ -22,16 +24,16 @@ namespace Project_ThuongMaiDT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Category obj) 
+        public IActionResult Create(Category obj)
         {
-            if(obj.Name == obj.DisplayOrder.ToString())
+            if (obj.Name == obj.DisplayOrder.ToString())
             {
-                ModelState.AddModelError("name","The DisplayOrder cannot exactly match the Name.");
+                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
             }
             if (ModelState.IsValid)
             {
-                _dB.categories.Add(obj);
-                _dB.SaveChanges();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category create successfully";
                 return RedirectToAction("Index");
             }
@@ -43,7 +45,7 @@ namespace Project_ThuongMaiDT.Controllers
             {
                 return NotFound();
             }
-            Category categoryFromDb = _dB.categories.Find(id);
+            Category categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
             //Category categoryFromDb1 = _dB.categories.FirstOrDefault(u => u.Id==id);
             //Category categoryFromDb2 = _dB.categories.Where(u => u.Id==id).FirstOrDefault();
             if (categoryFromDb == null) { return NotFound(); }
@@ -52,11 +54,11 @@ namespace Project_ThuongMaiDT.Controllers
         }
         [HttpPost]
         public IActionResult Edit(Category obj)
-        {   
+        {
             if (ModelState.IsValid)
             {
-                _dB.categories.Update(obj);
-                _dB.SaveChanges();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category update successfully";
                 return RedirectToAction("Index");
             }
@@ -69,7 +71,7 @@ namespace Project_ThuongMaiDT.Controllers
             {
                 return NotFound();
             }
-            Category categoryFromDb = _dB.categories.Find(id);
+            Category categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
             if (categoryFromDb == null) { return NotFound(); }
 
             return View(categoryFromDb);
@@ -77,10 +79,10 @@ namespace Project_ThuongMaiDT.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category obj = _dB.categories.Find(id);
+            Category obj = _unitOfWork.Category.Get(u => u.Id == id);
             if (obj == null) { return NotFound(); }
-            _dB.categories.Remove(obj);
-            _dB.SaveChanges();
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }

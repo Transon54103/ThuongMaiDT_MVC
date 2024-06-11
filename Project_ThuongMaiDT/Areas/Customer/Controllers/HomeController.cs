@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-
 using System.Diagnostics;
 using TMDT.Models;
 
-namespace Project_ThuongMaiDT.Controllers
+namespace Project_ThuongMaiDT.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
