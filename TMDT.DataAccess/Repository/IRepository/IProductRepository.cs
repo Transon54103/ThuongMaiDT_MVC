@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMDT.Models;
 
 namespace TMDT.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork
+    public interface IProductRepository : IRepository<Product>
     {
-        CategoryRepository Category { get; }
-        IProductRepository Product { get; }
-        void Save();
-        
+        void Update(Product obj);
     }
 }
