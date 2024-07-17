@@ -150,6 +150,7 @@ namespace Project_ThuongMaiDT.Areas.Admin.Controllers
             List<Product> objproductlist = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return Json(new { data = objproductlist });     
         }
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
             var productToBeDeleted = _unitOfWork.Product.Get(u =>u.Id == id);   
