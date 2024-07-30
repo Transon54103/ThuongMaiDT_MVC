@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TMDT.DataAccess.Data;
 using TMDT.DataAccess.Repository.IRepository;
 using TMDT.Models;
 using TMDT.Models.ViewModels;
+using TMDT.Utility;
 
 
 namespace Project_ThuongMaiDT.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
