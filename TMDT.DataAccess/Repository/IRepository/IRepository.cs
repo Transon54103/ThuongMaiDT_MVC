@@ -11,7 +11,7 @@ namespace TMDT.DataAccess.Repository.IRepository
     {
         //T - Catrgory
         IEnumerable<T> GetAll(String? includeProperties = null);
-        T Get(Expression<Func<T, bool>> filter, String? includeProperties = null);
+        T Get(Expression<Func<T, bool>> filter, String? includeProperties = null, bool tracked = false);
         void Add( T entity );
         void Remove( T entity );
         void RemoveRange(IEnumerable<T> entity);
