@@ -13,6 +13,8 @@ namespace TMDT.DataAccess.Repository.IRepository
         ICompanyRepository Company { get; }
         IShoppingCartRepository ShoppingCart { get; }
         IApplicationUserRepository ApplicationUser { get; }
+        IOrderDetailRepository OrderDetail { get; }
+        IOderHeaderRepository OrderHeader { get; }
         void Save();
         
     }

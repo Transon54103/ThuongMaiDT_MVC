@@ -48,9 +48,13 @@ namespace TMDT.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(String? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, String? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties

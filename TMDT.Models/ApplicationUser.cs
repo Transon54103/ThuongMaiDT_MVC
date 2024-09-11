@@ -24,6 +24,6 @@ namespace TMDT.Models
         //Thêm khóa ngoài cho người dùng
         [ForeignKey("CompanyId")] // ID công ty là thuộc tính điều hướng cho thuộc công ty (Company) này 
         [ValidateNever]
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
     }
 }

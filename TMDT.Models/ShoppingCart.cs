@@ -22,5 +22,7 @@ namespace TMDT.Models
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set;}
+        [NotMapped] //không tạo cột này trong csdl
+        public double Price { get; set;}
     }
 }
