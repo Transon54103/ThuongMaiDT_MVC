@@ -8,7 +8,7 @@ using TMDT.Models;
 
 namespace TMDT.DataAccess.Repository.IRepository
 {
-    public interface IOderHeaderRepository : IRepository<OrderHeader>
+    public interface IOrderHeaderRepository : IRepository<OrderHeader>
     {
         void Update(OrderHeader obj);
         void UpdateStatus(int id, string orderStatus, string? paymentStatus = null);

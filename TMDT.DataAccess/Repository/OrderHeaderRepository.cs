@@ -11,7 +11,7 @@ using TMDT.Models;
 
 namespace TMDT.DataAccess.Repository
 {
-    public class OrderHeaderRepository : Repository<OrderHeader>, IOderHeaderRepository
+    public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
     {
         private ApplicationDbContext _db;
         public OrderHeaderRepository(ApplicationDbContext db) : base(db)
@@ -24,7 +24,7 @@ namespace TMDT.DataAccess.Repository
         {
             _db.OrderHeaders.Update(obj);
         }
-		void IOderHeaderRepository.UpdateStatus(int id, string orderStatus, string? paymentStatus)
+		void IOrderHeaderRepository.UpdateStatus(int id, string orderStatus, string? paymentStatus)
 		{
 			var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
             if(orderFromDb != null)
@@ -37,7 +37,7 @@ namespace TMDT.DataAccess.Repository
             }
 		}
 
-		void IOderHeaderRepository.UpdateStripePaymentID(int id, string sessionId, string paymentIntentID)
+		void IOrderHeaderRepository.UpdateStripePaymentID(int id, string sessionId, string paymentIntentID)
 		{
 			var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id==id);
             if (!string.IsNullOrEmpty(sessionId))

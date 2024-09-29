@@ -26,6 +26,8 @@ namespace TMDT.Utility
 		public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
 		public const string PaymentStatusRejected = "Rejected";
 
+        //session số lương sản phẩm cho giỏ 
+        public const string SessionCart = "SesionShoppingCart";
 
 	}
 }

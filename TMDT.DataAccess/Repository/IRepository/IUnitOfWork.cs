@@ -14,7 +14,7 @@ namespace TMDT.DataAccess.Repository.IRepository
         IShoppingCartRepository ShoppingCart { get; }
         IApplicationUserRepository ApplicationUser { get; }
         IOrderDetailRepository OrderDetail { get; }
-        IOderHeaderRepository OrderHeader { get; }
+        IOrderHeaderRepository OrderHeader { get; }
         void Save();
         
     }

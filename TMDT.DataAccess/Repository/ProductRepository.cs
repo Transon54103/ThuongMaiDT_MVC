@@ -10,7 +10,7 @@ using TMDT.Models;
 
 namespace TMDT.DataAccess.Repository
 {
-    public class ProductRepository : Repository<Product>, IProductRepository
+    public class ProductRepository : Repository<Product>, IProductRepository //product có thể thay là sách or xe 
     {
         private ApplicationDbContext _db;
         public ProductRepository(ApplicationDbContext db) : base(db)
