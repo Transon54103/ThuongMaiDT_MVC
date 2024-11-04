@@ -22,13 +22,7 @@ namespace Project_ThuongMaiDT.Areas.Customer.Controllers
 
         public IActionResult Index(string searchTerm)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if(claim != null)
-            {
-                HttpContext.Session.SetInt32(SD.SessionCart,
-                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
-            }
+
             // L?y danh sách s?n ph?m và bao g?m thu?c tính "Category"
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category");
 

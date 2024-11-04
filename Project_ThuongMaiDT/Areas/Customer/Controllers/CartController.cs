@@ -1,5 +1,6 @@
 ﻿using BulkyBook.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 using System.Security.Claims;
@@ -15,11 +16,13 @@ namespace Project_ThuongMaiDT.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-		[BindProperty]
+        private readonly IEmailSender _emailSender; // Inject Email Sender
+        [BindProperty]
 		public ShoppingCartVM ShoppingCartVM { get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -154,32 +157,43 @@ namespace Project_ThuongMaiDT.Areas.Customer.Controllers
 		public IActionResult OrderConfirmation(int id)
 		{
 
-			OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
-			if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
-			{
-				//this is an order by customer
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
 
-				var service = new SessionService();
-				Session session = service.Get(orderHeader.SessionId);
+            if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
+            {
+                // Xác nhận thanh toán từ Stripe
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.SessionId);
 
-				if (session.PaymentStatus.ToLower() == "paid")
-				{
-					_unitOfWork.OrderHeader.UpdateStripePaymentID(id, session.Id, session.PaymentIntentId);
-					_unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
-					_unitOfWork.Save();
-				}
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.OrderHeader.UpdateStripePaymentID(id, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
 
+                HttpContext.Session.Clear();
+            }
 
-			}
+            // Xóa giỏ hàng sau khi đơn hàng thành công
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
 
-			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
-				.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
 
-			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
-			_unitOfWork.Save();
+            // Gửi email xác nhận
+            var subject = "Xác nhận đơn hàng thành công";
+            var message = $"Xin chào {orderHeader.ApplicationUser.Name},<br/><br/>" +
+                          $"Cảm ơn bạn đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.<br/>" +
+                          $"Tổng tiền: ${orderHeader.OrderTotal}.<br/>" +
+                          $"Đơn hàng của bạn đang được chuẩn bị và sẽ sớm được vận chuyển.<br/><br/>" +
+                          $"Xin cảm ơn quý khách và chúc quý khách một ngày tốt lành!";
 
-			return View(id);
-		}
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, subject, message);
+
+            return View(id);
+        }
 		public IActionResult Plus(int cartId) //cartId nhận từ view qua url qua code ASP-Router-cartId
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id  == cartId);
