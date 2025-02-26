@@ -19,13 +19,14 @@ namespace TMDT.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Actionnn", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "History", DisplayOrder = 2 },
-                new Category { Id = 3, Name = "SciFi", DisplayOrder = 3 }
+                new Category { Id = 3, Name = "SciFi", DisplayOrder = 3 } 
                 );
                         modelBuilder.Entity<Company>().HasData(
                 new Company { Id = 1, Name = "Tech Solution", StreetAddress="123 Tech St", City="Tech City",
